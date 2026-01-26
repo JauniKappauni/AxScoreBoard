@@ -2,3 +2,5 @@ name: AxScoreBoard
 version: '1.0-SNAPSHOT'
 main: de.jauni.axscoreboard.AxScoreBoard
 api-version: '1.21'
+softdepend:
+  - PlaceholderAPI
