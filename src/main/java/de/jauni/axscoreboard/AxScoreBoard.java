@@ -1,9 +1,16 @@
 package de.jauni.axscoreboard;
 
 import de.jauni.axscoreboard.listener.PlayerJoinListener;
+import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 
 import java.io.File;
 
@@ -37,5 +44,18 @@ public final class AxScoreBoard extends JavaPlugin {
 
     public Integer getScore(String path) {
         return langConfig.getInt(path);
+    }
+
+    public void setScoreboard(Player p){
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
+        Scoreboard board = manager.getNewScoreboard();
+
+        Objective objective = board.registerNewObjective("sidebar", "dummy");
+        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(getValue("scoreboard.title.value"));
+        for (int i = 1; i < 15; i++) {
+            objective.getScore(PlaceholderAPI.setPlaceholders(p, getValue("scoreboard" + "." + "line" + i + "." + "value"))).setScore(getScore("scoreboard" + "." + "line" + i + "." + "score"));
+        }
+        p.setScoreboard(board);
     }
 }
