@@ -1,5 +1,6 @@
 package de.jauni.axscoreboard;
 
+import de.jauni.axscoreboard.command.ReloadCommand;
 import de.jauni.axscoreboard.listener.PlayerJoinListener;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
@@ -23,6 +24,7 @@ public final class AxScoreBoard extends JavaPlugin {
         // Plugin startup logic
         createLangFile();
         getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
+        getCommand("reload").setExecutor(new ReloadCommand(this));
     }
 
     @Override
@@ -35,6 +37,10 @@ public final class AxScoreBoard extends JavaPlugin {
         if (!langFile.exists()) {
             saveResource("lang.yml", false);
         }
+        langConfig = YamlConfiguration.loadConfiguration(langFile);
+    }
+
+    public void reloadLangFile(){
         langConfig = YamlConfiguration.loadConfiguration(langFile);
     }
 
