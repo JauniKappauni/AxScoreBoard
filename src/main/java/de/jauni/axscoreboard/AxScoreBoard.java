@@ -64,4 +64,24 @@ public final class AxScoreBoard extends JavaPlugin {
         }
         p.setScoreboard(board);
     }
+
+    public void updateScoreboard(Player p){
+        Scoreboard board = p.getScoreboard();
+        Objective objective = board.getObjective("sidebar");
+
+        for(String entry : board.getEntries()){
+            board.resetScores(entry);
+        }
+
+        objective.setDisplayName(getValue("scoreboard.title.value"));
+
+        for (int i = 1; i < 15; i++) {
+            objective.getScore(PlaceholderAPI.setPlaceholders(p, getValue("scoreboard" + "." + "line" + i + "." + "value"))).setScore(getScore("scoreboard" + "." + "line" + i + "." + "score"));
+        }
+        p.setScoreboard(board);
+    }
+
+    public void startScoreboardUpdater(Player p){
+        Bukkit.getScheduler().runTaskTimer(this, () -> updateScoreboard(p), 20L, 20L);
+    }
 }
